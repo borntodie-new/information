@@ -25,3 +25,11 @@ migrate_up:
 # 删除数据库迁移命令 1
 migrate_down:
 	migrate -path pkg/db/migrations -database "postgres://root:password@localhost:5432/information?sslmode=disable" -verbose down
+
+# sqlc 工具生成 CRUD 代码
+sqlc:
+	sqlc generate
+
+# 启动服务
+start:
+	go run cmd/web/*.go

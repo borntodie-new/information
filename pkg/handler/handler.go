@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	db "github.com/borntodie-new/information/pkg/db/sqlc"
 	"github.com/justinas/nosurf"
 	"log"
 	"net/http"
@@ -14,9 +15,12 @@ import (
 // Repo the repository used by the handlers
 var Repo *Repository
 
+var Store db.Store
+
 // Repository is the repository type
 type Repository struct {
-	App *config.AppConfig
+	App   *config.AppConfig
+	Store db.Store
 }
 
 // NewRepo create a new repository
@@ -27,6 +31,11 @@ func NewRepo(a *config.AppConfig) *Repository {
 // NewHandlers sets the repository from the handlers
 func NewHandlers(r *Repository) {
 	Repo = r
+}
+
+// NewStore sets the store from the handlers
+func NewStore(s db.Store) {
+	Store = s
 }
 
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
@@ -44,6 +53,7 @@ func (m *Repository) BackendLogin(w http.ResponseWriter, r *http.Request) {
 }
 func (m *Repository) BackendLoginForm(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
+
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return

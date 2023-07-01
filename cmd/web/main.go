@@ -1,23 +1,32 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/alexedwards/scs/v2"
 	"github.com/borntodie-new/information/pkg/config"
+	db "github.com/borntodie-new/information/pkg/db/sqlc"
 	"github.com/borntodie-new/information/pkg/handler"
 	"github.com/borntodie-new/information/pkg/render"
+	_ "github.com/lib/pq"
 	"log"
 	"net/http"
 	"time"
 )
-
-const portNumber = ":8080"
 
 var app config.AppConfig
 var session *scs.SessionManager
 
 // main is the main application function
 func main() {
+	cnf, err := config.LoadConfig(".")
+	if err != nil {
+		log.Fatalln("cannot load config")
+	}
+	conn, err := sql.Open(cnf.DBDriver, cnf.DBDriver)
+	if err != nil {
+		log.Fatalln("cannot connect the db", err.Error())
+	}
 	app.InProduction = false
 
 	session = scs.New()
@@ -38,15 +47,18 @@ func main() {
 	repo := handler.NewRepo(&app)
 	handler.NewHandlers(repo)
 
+	store := db.NewStore(conn)
+	handler.NewStore(store)
+
 	render.NewTemplates(&app)
 
 	//http.HandleFunc("/", handlers.Repo.Home)
 	//http.HandleFunc("/about", handlers.Repo.Abort)
-	fmt.Printf("Starting application on port %s\n", portNumber)
+	fmt.Printf("Starting application on %s\n", cnf.HTTPServerAddress)
 	//_ = http.ListenAndServe(portNumber, nil)
 
 	srv := &http.Server{
-		Addr:    portNumber,
+		Addr:    cnf.HTTPServerAddress,
 		Handler: routes(&app),
 	}
 	err = srv.ListenAndServe()
