@@ -21,7 +21,16 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Use(SessionLoad)
 
 	mux.Get("/", handler.Repo.Home)
-	//mux.Get("/about", handler.Repo.Abort)
+
+	mux.Get("/backend/login", handler.Repo.BackendLogin)
+	mux.Get("/backend/index", handler.Repo.BackendIndex)
+	mux.Get("/backend/user_count", handler.Repo.BackendUserCount)
+	mux.Get("/backend/user_list", handler.Repo.BackendUserList)
+	mux.Get("/backend/news_edit", handler.Repo.BackendNewsEdit)
+	mux.Get("/backend/news_edit_detail/{id}", handler.Repo.BackendNewsEditDetail)
+	mux.Get("/backend/news_review", handler.Repo.BackendNewsReview)
+	mux.Get("/backend/news_review_detail/{id}", handler.Repo.BackendNewsReviewDetail)
+	mux.Get("/backend/news_type", handler.Repo.BackendNewsType)
 
 	fileServer := http.FileServer(http.Dir("./static"))
 	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))

@@ -23,6 +23,7 @@ func AddDefaultData(td *model.TemplateData) *model.TemplateData {
 
 // RenderTemplate renders a template
 func RenderTemplate(w http.ResponseWriter, tmpl string, td *model.TemplateData) {
+	log.Println(tmpl)
 	var tc map[string]*template.Template
 
 	if app.UseCache {

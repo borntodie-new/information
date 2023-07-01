@@ -33,14 +33,33 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, "index.page.tmpl", &model.TemplateData{})
 }
 
-//func (m *Repository) Abort(w http.ResponseWriter, r *http.Request) {
-//	// get the last request's ip in here
-//	remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
-//
-//	stringMap := make(map[string]string)
-//	stringMap["test"] = "Hello, again"
-//	stringMap["remote_ip"] = remoteIP
-//	render.RenderTemplate(w, "about.page.tmpl", &model.TemplateData{
-//		StringMap: stringMap,
-//	})
-//}
+func (m *Repository) BackendLogin(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "backend.login.page.tmpl", &model.TemplateData{})
+}
+func (m *Repository) BackendIndex(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "backend.index.page.tmpl", &model.TemplateData{})
+}
+
+func (m *Repository) BackendUserCount(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "backend.user.count.page.tmpl", &model.TemplateData{})
+}
+
+func (m *Repository) BackendUserList(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "backend.user.list.page.tmpl", &model.TemplateData{})
+}
+
+func (m *Repository) BackendNewsEdit(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "backend.news.edit.page.tmpl", &model.TemplateData{})
+}
+func (m *Repository) BackendNewsEditDetail(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "backend.news.edit.detail.page.tmpl", &model.TemplateData{})
+}
+func (m *Repository) BackendNewsReview(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "backend.news.review.page.tmpl", &model.TemplateData{})
+}
+func (m *Repository) BackendNewsReviewDetail(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "backend.news.review.detail.page.tmpl", &model.TemplateData{})
+}
+func (m *Repository) BackendNewsType(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "backend.news.type.page.tmpl", &model.TemplateData{})
+}

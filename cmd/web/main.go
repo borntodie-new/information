@@ -29,7 +29,7 @@ func main() {
 	session.Cookie.Secure = app.InProduction
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
-		log.Fatalln("cannot create template cache")
+		log.Fatalln("cannot create template cache", err.Error())
 	}
 	app.TemplateCache = tc
 	app.UseCache = false
