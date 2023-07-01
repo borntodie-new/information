@@ -10,13 +10,36 @@
 <div class="login_logo">
     <img src="/static/images/backend/logo.png" alt="">
 </div>
-<form method="post" class="login_form">
+<form method="post" class="login_form" id="login_form">
     <h1 class="login_title">用户登录</h1>
-    <input type="text" name="username" placeholder="用户名" class="input_txt">
-    <input type="password" name="password" placeholder="密码" class="input_txt">
+    <input type="text" name="username" placeholder="用户名" class="input_txt username">
+    <input type="password" name="password" placeholder="密码" class="input_txt password">
     <div class="error_tip">错误提示</div>
-    <input type="submit" value="登 录" class="input_sub">
+    <input type="button" value="登 录" class="input_sub login_btn">
 </form>
 <div class="login_bg"></div>
 </body>
+<script type="text/javascript" src="/static/js/backend/jquery-1.12.4.min.js"></script>
+<script>
+    $(".login_btn").on("click", function () {
+        const formData = new FormData()
+        formData.append("username", $(".username").val());
+        formData.append("password", $(".password").val());
+        formData.append("csrf_token", "{{.CSRFToken}}");
+        $.ajax({
+            url: "/backend/login_form",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function (data) {
+                var data = JSON.parse(data);
+                if (data["username"] === "jason") {
+                    document.location.href = "/backend/index"
+                }
+                console.log(data)
+            },
+        })
+    });
+</script>
 </html>

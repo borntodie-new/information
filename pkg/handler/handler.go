@@ -1,6 +1,9 @@
 package handler
 
 import (
+	"encoding/json"
+	"github.com/justinas/nosurf"
+	"log"
 	"net/http"
 
 	"github.com/borntodie-new/information/pkg/config"
@@ -34,9 +37,32 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) BackendLogin(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "backend.login.page.tmpl", &model.TemplateData{})
+	csrfToken := nosurf.Token(r)
+	render.RenderTemplate(w, "backend.login.page.tmpl", &model.TemplateData{
+		CSRFToken: csrfToken,
+	})
 }
+func (m *Repository) BackendLoginForm(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	data := map[string]string{
+		"username": r.FormValue("username"),
+		"password": r.FormValue("password"),
+	}
+	log.Println("提价表单：", r.Method)
+	encoder := json.NewEncoder(w)
+	err = encoder.Encode(data)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+}
+
 func (m *Repository) BackendIndex(w http.ResponseWriter, r *http.Request) {
+
 	render.RenderTemplate(w, "backend.index.page.tmpl", &model.TemplateData{})
 }
 

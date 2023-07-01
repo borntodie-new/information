@@ -13,7 +13,7 @@ func routes(app *config.AppConfig) http.Handler {
 	//mux.Get("/", http.HandlerFunc(handlers.Repo.Home))
 	//mux.Get("/about", http.HandlerFunc(handlers.Repo.Abort))
 
-	mux := chi.NewMux()
+	mux := chi.NewRouter()
 
 	mux.Use(middleware.Recoverer)
 	//mux.Use(WriteToConsole)
@@ -23,6 +23,8 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/", handler.Repo.Home)
 
 	mux.Get("/backend/login", handler.Repo.BackendLogin)
+	mux.Post("/backend/login_form", handler.Repo.BackendLoginForm)
+
 	mux.Get("/backend/index", handler.Repo.BackendIndex)
 	mux.Get("/backend/user_count", handler.Repo.BackendUserCount)
 	mux.Get("/backend/user_list", handler.Repo.BackendUserList)
